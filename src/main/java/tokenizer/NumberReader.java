@@ -15,12 +15,7 @@ public class NumberReader implements JSONReader {
     }
 
     public Token read(Reader reader, int c) throws IOException {
-        return readNum(reader);
-    }
-
-    private Token readNum(Reader reader) throws IOException {
         StringBuilder sb = new StringBuilder();
-        int c = reader.read();
         if (c == '-') {
             sb.append((char) c);
             c = reader.read();

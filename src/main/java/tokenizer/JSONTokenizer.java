@@ -50,9 +50,7 @@ public class JSONTokenizer implements Tokenizer<Token> {
         while (isSpace(c)) {
             c = reader.read();
         }
-
         Token booleanChecks = booleanChecks(reader, c);
-
         if (booleanChecks != null) {
             return booleanChecks;
         }
@@ -68,19 +66,32 @@ public class JSONTokenizer implements Tokenizer<Token> {
     }
 
     private Token booleanChecks(Reader reader, int c) throws IOException {
+        if (c == -1) {
+            return new Token(TokenType.END_DATA, "EOF");
+        }
         if (isNum(c)) {
             return numberReader.read(reader, c);
         }
         if (c == '"') {
             return stringReader.read(reader, c);
         }
-        if (c == -1) {
-            return new Token(TokenType.END_DATA, "EOF");
+        if (c == 'n') {
+            Token nullReaderResult = nullReader.read(reader, c);
+            if (nullReaderResult != null) {
+                return nullReaderResult;
+            } else {
+                throw new JSONException("Invalid JSONObject input.");
+            }
         }
-        Token nullReaderResult = nullReader.read(reader, c);
-        if (nullReaderResult != null) {
-            return nullReaderResult;
+        if (c == 'f' || c == 't') {
+            Token booleanReaderResult = booleanReader.read(reader, c);
+            if (booleanReaderResult != null) {
+                return booleanReaderResult;
+            } else {
+                throw new JSONException("Invalid JSONObject input.");
+            }
+
         }
-        return booleanReader.read(reader, c);
+        return null;
     }
 }
