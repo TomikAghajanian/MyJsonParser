@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 import static utility.Helper.isDigit;
-import static utility.Helper.isDigitOne2Nine;
+import static utility.Helper.isDigitOneToNine;
 
 public class NumberReader implements JSONReader {
 
@@ -26,17 +26,17 @@ public class NumberReader implements JSONReader {
             c = reader.read();
             if (c == '0') {
                 sb.append((char) c);
-            } else if (isDigitOne2Nine(c)) {
+            } else if (isDigitOneToNine(c)) {
                 do {
                     sb.append((char) c);
                     c = reader.read();
                 } while (isDigit(c));
             } else {
-                throw new JSONException("- not followed by digit");
+                throw new JSONException("'-' is not followed by a digit");
             }
         } else if (c == '0') {
             sb.append((char) c);
-        } else if (isDigitOne2Nine(c)) {
+        } else if (isDigitOneToNine(c)) {
             do {
                 sb.append((char) c);
                 c = reader.read();

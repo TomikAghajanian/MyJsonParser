@@ -9,7 +9,7 @@ public abstract class JSON {
         return this instanceof JSONObject;
     }
 
-    public boolean isJsonPrimitive() {
+    public boolean isPrimitive() {
         return this instanceof Primitive;
     }
 
@@ -17,21 +17,21 @@ public abstract class JSON {
         if (isJSONObject()) {
             return (JSONObject) this;
         }
-        throw new IllegalStateException("Not a JSON Object: " + this);
+        throw new IllegalStateException("Not a JSON Object");
     }
 
     public JSONArray getAsJSONArray() {
         if (isJSONArray()) {
             return (JSONArray) this;
         }
-        throw new IllegalStateException("Not a JSON Array: " + this);
+        throw new IllegalStateException("Not a JSON Array");
     }
 
-    public Primitive getAsJsonPrimitive() {
-        if (isJsonPrimitive()) {
+    public Primitive getAsJSONPrimitive() {
+        if (isPrimitive()) {
             return (Primitive) this;
         }
-        throw new IllegalStateException("Not a JSON Primitive: " + this);
+        throw new IllegalStateException("Not a JSON Primitive");
     }
 
     public boolean getAsBoolean() {

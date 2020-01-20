@@ -14,7 +14,7 @@ public class Helper {
         return c >= '0' && c <= '9';
     }
 
-    public static boolean isDigitOne2Nine(int c) {
+    public static boolean isDigitOneToNine(int c) {
         return c >= '1' && c <= '9';
     }
 }

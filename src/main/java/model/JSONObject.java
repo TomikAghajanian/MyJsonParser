@@ -24,7 +24,7 @@ public class JSONObject extends JSON {
         return (JSONObject) jsonMap.get(key);
     }
 
-    public Primitive getPrimary(String key) {
+    public Primitive getPrimitive(String key) {
         return (Primitive) jsonMap.get(key);
     }
 

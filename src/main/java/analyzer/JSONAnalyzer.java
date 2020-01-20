@@ -29,9 +29,9 @@ public class JSONAnalyzer implements SyntacticalAnalyzer {
             return null;
         }
         Token mustBeOpeningBraces = peekFirst(tokens);
-        if (isToken(mustBeOpeningBraces, START_OBJECT)) {
+        if (areMatchingTypes(mustBeOpeningBraces, START_OBJECT)) {
             return jsonObjectAnalyzer.analyze(tokens);
-        } else if (isToken(mustBeOpeningBraces, START_ARRAY)) {
+        } else if (areMatchingTypes(mustBeOpeningBraces, START_ARRAY)) {
             return jsonArrayAnalyzer.analyze(tokens);
         } else {
             throw new JSONException("Invalid input");

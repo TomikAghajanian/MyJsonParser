@@ -56,10 +56,10 @@ public class JSONTokenizer implements Tokenizer<Token> {
         if (booleanChecks != null) {
             return booleanChecks;
         }
-        return tokenChecks(c);
+        return characterChecks(c);
     }
 
-    private Token tokenChecks(int c) throws IOException {
+    private Token characterChecks(int c) throws IOException {
         if (TOKENS.get((char) c) != null) {
             return new Token(TOKENS.get((char) c), Character.toString((char) c));
         } else {

@@ -26,7 +26,7 @@ public class JSONObjectAnalyzer implements SyntacticalAnalyzer {
         }
         JSONObject jsonObject = new JSONObject();
         Token mustBeOpeningCurlyBraces = peekFirst(tokens);
-        if (!isToken(mustBeOpeningCurlyBraces, START_OBJECT)) {
+        if (!areMatchingTypes(mustBeOpeningCurlyBraces, START_OBJECT)) {
             throw new JSONException("Invalid input");
         }
         consumeFirst(tokens);
@@ -47,7 +47,7 @@ public class JSONObjectAnalyzer implements SyntacticalAnalyzer {
     private void updateObjectMap(JSONObject jsonObject, List<Token> tokens) throws JSONException {
         String key = consumeFirst(tokens).getValue();
         Token mustBeColon = consumeFirst(tokens);
-        if (!isToken(mustBeColon, COLON)) {
+        if (!areMatchingTypes(mustBeColon, COLON)) {
             throw new JSONException("Invalid JSONObject input.");
         }
         Token afterColonToken = peekFirst(tokens);
@@ -68,13 +68,13 @@ public class JSONObjectAnalyzer implements SyntacticalAnalyzer {
             }
         }
         Token tmpToken = peekFirst(tokens);
-        if (isToken(tmpToken, COMMA)) {
+        if (areMatchingTypes(tmpToken, COMMA)) {
             consumeFirst(tokens);
             Token afterCommaToken = peekFirst(tokens);
-            if (isToken(afterCommaToken, STRING)) {
+            if (areMatchingTypes(afterCommaToken, STRING)) {
                 updateObjectMap(jsonObject, tokens);
             }
-        } else if (isToken(tmpToken, END_OBJECT)) {
+        } else if (areMatchingTypes(tmpToken, END_OBJECT)) {
             consumeFirst(tokens);
         } else {
             throw new JSONException("Invalid JSON input.");

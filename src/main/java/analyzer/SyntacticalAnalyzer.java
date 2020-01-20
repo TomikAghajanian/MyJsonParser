@@ -11,7 +11,7 @@ public interface SyntacticalAnalyzer {
 
     public JSON analyze(List<Token> tokens) throws JSONException;
 
-    default boolean isToken(Token token, TokenType tokenType) {
+    default boolean areMatchingTypes(Token token, TokenType tokenType) {
         return token.getType() == tokenType;
     }
 

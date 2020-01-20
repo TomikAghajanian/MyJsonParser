@@ -24,7 +24,7 @@ public class StringReader implements JSONReader {
             } else if (c == '"') {
                 return new Token(TokenType.STRING, sb.toString());
             } else if (c == '\r' || c == '\n') {
-                throw new JSONException("Invalid JSONObject input.");
+                throw new JSONException("Invalid JSON input.");
             } else {
                 sb.append((char) c);
             }
@@ -34,8 +34,15 @@ public class StringReader implements JSONReader {
     private boolean isEscape(Reader reader, int c) throws IOException {
         if (c == '\\') {
             c = reader.read();
-            if (c == '"' || c == '\\' || c == '/' || c == 'b' ||
-                    c == 'f' || c == 'n' || c == 't' || c == 'r' || c == 'u') {
+            if (c == '"' ||
+                    c == '\\' ||
+                    c == '/' ||
+                    c == 'b' ||
+                    c == 'f' ||
+                    c == 'n' ||
+                    c == 't' ||
+                    c == 'r' ||
+                    c == 'u') {
                 return true;
             } else {
                 throw new JSONException("Invalid JSON input");

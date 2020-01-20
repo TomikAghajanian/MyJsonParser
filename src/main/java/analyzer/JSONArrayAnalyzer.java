@@ -28,27 +28,27 @@ public class JSONArrayAnalyzer implements SyntacticalAnalyzer {
         }
         List<JSON> jsonElements = new ArrayList<>();
         Token mustBeOpenBrackets = consumeFirst(tokens);
-        if(!isToken(mustBeOpenBrackets, START_ARRAY)){
+        if(!areMatchingTypes(mustBeOpenBrackets, START_ARRAY)){
             throw new JSONException("Invalid JSONObject input.");
         }
         JSONArray array;
         Token token = peekFirst(tokens);
-        if (isToken(token, TokenType.START_ARRAY)) {
+        if (areMatchingTypes(token, TokenType.START_ARRAY)) {
             array = analyze(tokens).getAsJSONArray();
             jsonElements.add(array);
-            if (isToken(token, TokenType.COMMA)) {
+            if (areMatchingTypes(token, TokenType.COMMA)) {
                 consumeFirst(tokens);
                 appendToJsonElements(tokens, jsonElements);
             }
         } else if (isPrimitive(token)) {
             appendToJsonElements(tokens, jsonElements);
-        } else if (isToken(token, TokenType.START_OBJECT)) {
+        } else if (areMatchingTypes(token, TokenType.START_OBJECT)) {
             jsonElements.add(jsonObjectParser.analyze(tokens));
-            while (isToken(token, TokenType.COMMA)) {
+            while (areMatchingTypes(token, TokenType.COMMA)) {
                 consumeFirst(tokens);
                 jsonElements.add(jsonObjectParser.analyze(tokens));
             }
-        } else if (isToken(token, TokenType.END_ARRAY)) {
+        } else if (areMatchingTypes(token, TokenType.END_ARRAY)) {
             consumeFirst(tokens);
             array = new JSONArray();
             array.addAll(jsonElements);
@@ -63,13 +63,13 @@ public class JSONArrayAnalyzer implements SyntacticalAnalyzer {
     private void appendToJsonElements(List<Token> tokens, List<JSON> jsonList) throws JSONException {
         Token token = consumeFirst(tokens);
         jsonList.add(new Primitive(token.getValue()));
-        if (isToken(token, TokenType.COMMA)) {
+        if (areMatchingTypes(token, TokenType.COMMA)) {
             Token tmpToken = consumeFirst(tokens);
             if (isPrimitive(tmpToken)) {
                 appendToJsonElements(tokens, jsonList);
-            } else if (isToken(tmpToken, TokenType.START_OBJECT)) {
+            } else if (areMatchingTypes(tmpToken, TokenType.START_OBJECT)) {
                 jsonList.add(jsonObjectParser.analyze(tokens));
-            } else if (isToken(tmpToken, TokenType.START_ARRAY)) {
+            } else if (areMatchingTypes(tmpToken, TokenType.START_ARRAY)) {
                 jsonList.add(analyze(tokens));
             } else {
                 throw new JSONException("Invalid JSONObject input.");
