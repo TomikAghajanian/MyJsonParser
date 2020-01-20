@@ -1,0 +1,5 @@
+package tokenizer;
+
+public enum TokenType {
+    START_ARRAY, END_ARRAY, START_OBJECT, END_OBJECT, STRING, NULL, NUMBER, BOOLEAN, END_DATA, COLON, COMMA
+}
