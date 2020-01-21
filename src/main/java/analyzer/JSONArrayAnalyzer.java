@@ -36,7 +36,8 @@ public class JSONArrayAnalyzer implements SyntacticalAnalyzer {
         if (areMatchingTypes(token, TokenType.START_ARRAY)) {
             array = analyze(tokens).getAsJSONArray();
             jsonElements.add(array);
-            if (areMatchingTypes(token, TokenType.COMMA)) {
+            Token tmpToken = peekFirst(tokens);
+            if (areMatchingTypes(tmpToken, TokenType.COMMA)) {
                 consumeFirst(tokens);
                 appendToJsonElements(tokens, jsonElements);
             }
@@ -44,7 +45,7 @@ public class JSONArrayAnalyzer implements SyntacticalAnalyzer {
             appendToJsonElements(tokens, jsonElements);
         } else if (areMatchingTypes(token, TokenType.START_OBJECT)) {
             jsonElements.add(jsonObjectParser.analyze(tokens));
-            while (areMatchingTypes(token, TokenType.COMMA)) {
+            while (areMatchingTypes( peekFirst(tokens), TokenType.COMMA)) {
                 consumeFirst(tokens);
                 jsonElements.add(jsonObjectParser.analyze(tokens));
             }
