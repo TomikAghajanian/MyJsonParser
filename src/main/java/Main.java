@@ -36,7 +36,6 @@ public class Main {
                 "}}";
 
         Parser parser = injector.getInstance(JSONParser.class);
-        System.out.println(jsonTestString);
         JSON json = parser.parse(jsonTestString);
         System.out.println(json.getAsJSONObject().getJSONObject("menu").getJSONArray("items").get(2));
     }

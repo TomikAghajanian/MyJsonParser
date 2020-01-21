@@ -76,7 +76,7 @@ public class JSONAnalyzer implements SyntacticalAnalyzer {
                     jsonObject.put(key, processJSONArray(tokens));
                     break;
                 case START_OBJECT:
-                    jsonObject.put(key, analyze(tokens));
+                    jsonObject.put(key, processJSONObject(tokens));
                     break;
                 default:
                     throw new JSONException("Invalid JSONObject input.");
