@@ -12,6 +12,9 @@ public class StringReader implements JSONReader {
     }
 
     public Token read(Reader reader, int c) throws IOException {
+        if (c != '"') {
+            return null;
+        }
         return readString(reader);
     }
 
