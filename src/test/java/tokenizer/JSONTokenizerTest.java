@@ -7,8 +7,8 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static tokenizer.TestConstants.JSON_ONE;
-import static tokenizer.TestConstants.JSON_TWO;
+import static util.TestConstants.JSON_ONE;
+import static util.TestConstants.JSON_TWO;
 
 public class JSONTokenizerTest {
     private Tokenizer<Token> jsonTokenizer;

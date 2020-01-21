@@ -15,7 +15,7 @@ public class JSONParser implements Parser {
     private Tokenizer<Token> jsonTokenizer;
 
     @Inject
-    public JSONParser(@Named("JsonAnalyzer") SyntacticalAnalyzer jsonAnalyzer,
+    public JSONParser(SyntacticalAnalyzer jsonAnalyzer,
                       @Named("JsonTokenizerProcessor") Tokenizer<Token> jsonTokenizer) {
         this.jsonAnalyzer = jsonAnalyzer;
         this.jsonTokenizer = jsonTokenizer;

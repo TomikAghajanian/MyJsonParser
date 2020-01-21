@@ -1,4 +1,4 @@
-package tokenizer;
+package util;
 
 public final class TestConstants {
     public static final String JSON_ONE = "   {" +
