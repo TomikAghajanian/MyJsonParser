@@ -10,19 +10,12 @@ import parser.Parser;
 public class Main {
     public static void main(String[] args) throws Exception {
         Injector injector = Guice.createInjector(new AnalyzerConfiguration(), new TokenizerConfiguration(), new ParserConfiguration());
-        String jsonString1 = "   {" +
-                "\"menu\": {" +
-                "\"header\": \"SVG Viewer\"," +
-                "\"items\": [{" +
-                "\"id\": \"Open\"" +
-                "}]" +
-                "}" +
-                "}";
-        String test1 = "{\"menu\": {\n" +
+        String jsonTestString = "{\"menu\": {\n" +
                 "    \"header\": \"SVG Viewer\",\n" +
                 "    \"items\": [\n" +
                 "        {\"id\": \"Open\"},\n" +
                 "        {\"id\": \"OpenNew\", \"label\": \"Open New\"},\n" +
+                "        null,\n" +
                 "        {\"id\": \"ZoomIn\", \"label\": \"Zoom In\"},\n" +
                 "        {\"id\": \"ZoomOut\", \"label\": \"Zoom Out\"},\n" +
                 "        {\"id\": \"OriginalView\", \"label\": \"Original View\"},\n" +
@@ -41,9 +34,10 @@ public class Main {
                 "        {\"id\": \"About\", \"label\": \"About Adobe CVG Viewer...\"}\n" +
                 "    ]\n" +
                 "}}";
+
         Parser parser = injector.getInstance(JSONParser.class);
-        System.out.println(test1);
-        JSON json2 = parser.parse(test1);
-        System.out.println(json2.getAsJSONObject().getJSONObject("menu"));
+        System.out.println(jsonTestString);
+        JSON json = parser.parse(jsonTestString);
+        System.out.println(json.getAsJSONObject().getJSONObject("menu").getJSONArray("items").get(2));
     }
 }

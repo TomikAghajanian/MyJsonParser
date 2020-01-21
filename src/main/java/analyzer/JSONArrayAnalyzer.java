@@ -15,11 +15,14 @@ import java.util.List;
 import static tokenizer.TokenType.START_ARRAY;
 
 public class JSONArrayAnalyzer implements SyntacticalAnalyzer {
-    private SyntacticalAnalyzer jsonObjectParser;
+    private SyntacticalAnalyzer jsonObjectAnalyzer;
+    private SyntacticalAnalyzer jsonAnalyzer;
 
     @Inject
-    public JSONArrayAnalyzer(@Named("JsonObjectAnalyzer") SyntacticalAnalyzer jsonObjectParser) {
-        this.jsonObjectParser = jsonObjectParser;
+    public JSONArrayAnalyzer(@Named("JsonObjectAnalyzer") SyntacticalAnalyzer jsonObjectAnalyzer,
+                             @Named("JsonAnalyzer") SyntacticalAnalyzer jsonAnalyzer) {
+        this.jsonObjectAnalyzer = jsonObjectAnalyzer;
+        this.jsonAnalyzer = jsonAnalyzer;
     }
 
     public JSON analyze(List<Token> tokens) throws JSONException {
@@ -44,10 +47,10 @@ public class JSONArrayAnalyzer implements SyntacticalAnalyzer {
         } else if (isPrimitive(token)) {
             appendToJsonElements(tokens, jsonElements);
         } else if (areMatchingTypes(token, TokenType.START_OBJECT)) {
-            jsonElements.add(jsonObjectParser.analyze(tokens));
+            jsonElements.add(jsonObjectAnalyzer.analyze(tokens));
             while (areMatchingTypes( peekFirst(tokens), TokenType.COMMA)) {
                 consumeFirst(tokens);
-                jsonElements.add(jsonObjectParser.analyze(tokens));
+                jsonElements.add(jsonAnalyzer.analyze(tokens));
             }
         } else if (areMatchingTypes(token, TokenType.END_ARRAY)) {
             consumeFirst(tokens);
@@ -62,20 +65,21 @@ public class JSONArrayAnalyzer implements SyntacticalAnalyzer {
     }
 
     private void appendToJsonElements(List<Token> tokens, List<JSON> jsonList) throws JSONException {
-        Token token = consumeFirst(tokens);
-        jsonList.add(new Primitive(token.getValue()));
+        jsonList.add(new Primitive(consumeFirst(tokens).getValue()));
+        Token token = peekFirst(tokens);
         if (areMatchingTypes(token, TokenType.COMMA)) {
-            Token tmpToken = consumeFirst(tokens);
+            consumeFirst(tokens);
+            Token tmpToken = peekFirst(tokens);
             if (isPrimitive(tmpToken)) {
                 appendToJsonElements(tokens, jsonList);
             } else if (areMatchingTypes(tmpToken, TokenType.START_OBJECT)) {
-                jsonList.add(jsonObjectParser.analyze(tokens));
+                jsonList.add(jsonObjectAnalyzer.analyze(tokens));
             } else if (areMatchingTypes(tmpToken, TokenType.START_ARRAY)) {
                 jsonList.add(analyze(tokens));
             } else {
                 throw new JSONException("Invalid JSONObject input.");
             }
-        } else {
+        } else if (!areMatchingTypes(token, TokenType.END_ARRAY)) {
             throw new JSONException("Invalid JSONObject input.");
         }
     }

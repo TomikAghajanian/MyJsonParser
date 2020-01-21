@@ -69,8 +69,7 @@ public class JSONObjectAnalyzer implements SyntacticalAnalyzer {
         Token tmpToken = peekFirst(tokens);
         if (areMatchingTypes(tmpToken, COMMA)) {
             consumeFirst(tokens);
-            Token afterCommaToken = peekFirst(tokens);
-            if (areMatchingTypes(afterCommaToken, STRING)) {
+            if (areMatchingTypes(peekFirst(tokens), STRING)) {
                 updateObjectMap(jsonObject, tokens);
             }
         } else if (areMatchingTypes(tmpToken, END_OBJECT)) {

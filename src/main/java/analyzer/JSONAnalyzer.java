@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import exception.JSONException;
 import model.JSON;
+import model.Primitive;
 import model.Token;
 
 import java.util.List;
@@ -28,12 +29,15 @@ public class JSONAnalyzer implements SyntacticalAnalyzer {
         if (tokens.isEmpty()) {
             return null;
         }
-        Token mustBeOpeningBraces = peekFirst(tokens);
-        if (areMatchingTypes(mustBeOpeningBraces, START_OBJECT)) {
+        Token token = peekFirst(tokens);
+        if (areMatchingTypes(token, START_OBJECT)) {
             return jsonObjectAnalyzer.analyze(tokens);
-        } else if (areMatchingTypes(mustBeOpeningBraces, START_ARRAY)) {
+        } else if (areMatchingTypes(token, START_ARRAY)) {
             return jsonArrayAnalyzer.analyze(tokens);
-        } else {
+        } else if(isPrimitive(token)){
+            consumeFirst(tokens);
+            return new Primitive(token.getValue());
+        }else {
             throw new JSONException("Invalid input");
         }
     }
